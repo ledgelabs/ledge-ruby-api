@@ -48,5 +48,6 @@ jobs:
       - name: Publish gem
 
         run: |
+          cd ${{ env.SOURCE_PATH }}
           echo "Pushing the built gem to GitHub Package Registry"
           find . -name '*.gem' -maxdepth 1 -print0 | xargs -0 gem push --key github --host ${{ env.REPO_URL }}
