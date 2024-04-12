@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Build gem
+      - name: Build and Publish gem
         # Commands taken from jstastny/publish-gem-to-github
         run: |
           cd "${GITHUB_WORKSPACE}" || exit 1
@@ -36,18 +36,5 @@ jobs:
           echo "Building the gem"
           find . -name '*.gemspec' -maxdepth 1 -exec gem build {} \;
 
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Publish gem
-
-        run: |
-          cd ${{ env.SOURCE_PATH }}
           echo "Pushing the built gem to GitHub Package Registry"
           find . -name '*.gem' -maxdepth 1 -print0 | xargs -0 gem push --key github --host ${{ env.REPO_URL }}
